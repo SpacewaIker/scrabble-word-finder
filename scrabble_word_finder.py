@@ -2,37 +2,10 @@ import itertools
 import re
 import pandas as pd
 
-SOWPODS_FR = pd.read_csv('projects/scrabble/sowpods_fr.csv', names=['Word'],
+SOWPODS_FR = pd.read_csv('sowpods_fr.csv', names=['Word'],
                          keep_default_na=False)
 
-POINTS_FR = {
-    'A': 1,
-    'B': 3,
-    'C': 3,
-    'D': 2,
-    'E': 1,
-    'F': 4,
-    'G': 2,
-    'H': 4,
-    'I': 1,
-    'J': 8,
-    'K': 10,
-    'L': 1,
-    'M': 2,
-    'N': 1,
-    'O': 1,
-    'P': 3,
-    'Q': 8,
-    'R': 1,
-    'S': 1,
-    'T': 1,
-    'U': 1,
-    'V': 4,
-    'W': 10,
-    'X': 10,
-    'Y': 10,
-    'Z': 10
-}
+POINTS_FR = pd.read_csv('points_fr.csv', names=['Letter', 'Value'])
 
 
 def points_for_word(word, points=POINTS_FR):
@@ -41,13 +14,14 @@ def points_for_word(word, points=POINTS_FR):
             word:
                 str, word to calculate the number of points of
             points:
-                dict, number of points given for each letter'''
+                pd.DataFrame, number of points given for each letter'''
 
     word = word.upper()
     pts = 0
 
-    for letter in range(len(word)):
-        pts += points[word[letter]]
+    for letter in word:
+        x = points.loc[(points['Letter'] == letter), 'Value']
+        pts += x.reset_index(drop=True).loc[0]
 
     return pts
 
@@ -130,6 +104,6 @@ def check_word_with_letters(letters, length=[1, 2, 3, 4, 5, 6, 7], alone=True,
 letters = ['r', 'o', 'u', 'g', 'e', 'f', 'c']
 
 print(
-    check_word_with_letters(letters, add_letters=[0, 1],
-                            alone=False, points=True).head(15)
+    check_word_with_letters(letters, add_letters=[0],
+                            alone=True, points=True)
 )
