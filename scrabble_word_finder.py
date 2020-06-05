@@ -104,6 +104,6 @@ def check_word_with_letters(letters, length=[1, 2, 3, 4, 5, 6, 7], alone=True,
 letters = ['r', 'o', 'u', 'g', 'e', 'f', 'c']
 
 print(
-    check_word_with_letters(letters, add_letters=[0],
-                            alone=True, points=True)
+    check_word_with_letters(letters, add_letters=[0, 1],
+                            alone=False, points=True)
 )
